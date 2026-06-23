@@ -20,18 +20,19 @@ Open `index.html` in a browser. No internet connection or package install is nee
 
 Overlapping contour regions are merged before drawing, so zones that overlap become visually connected instead of appearing as separate stacked shapes.
 
-## Screening contour defaults
+## Approximate QRA-style contour defaults
 
-The built-in distances are literature-informed screening values, not calculated QRA contours.
+The built-in distances use the approximate individual-risk contour values from the provided reference text. They are still presentation estimates, not calculated QRA outputs.
 
-- 10 inch dark green: 100 m / 250 m / 500 m
-- 18 inch dark blue: 150 m / 400 m / 800 m
-- 32 inch dark red: 300 m / 750 m / 1500 m
+- 10 inch dark green: 15 m / 40 m / 80 m
+- 18 inch dark blue: 30 m / 80 m / 160 m
+- 32 inch dark red: 50 m / 150 m / 300 m
 
 Basis:
 
 - NIOSH lists CO2 IDLH as 40,000 ppm, with 5,000 ppm TWA and 30,000 ppm short-term exposure limits.
 - The Satartia, Mississippi incident involved a 24-inch CO2 pipeline rupture, more than 300 evacuations, and 46 hospital treatments.
 - Public reporting for the 2024 Sulphur, Louisiana CO2 pipeline leak described a 0.25-mile shelter-in-place radius.
+- The attached reference text separates QRA-style risk contours from worst-case physical plume footprints. For presentation risk contours, the app uses the QRA-style values above.
 
-These are illustrative screening zones, not calculated risk contours. Actual CO2 contours require QRA or dispersion modelling.
+These are illustrative risk zones, not calculated risk contours. Worst-case CO2 plume footprints can extend much further, especially in stagnant weather, low-lying terrain, or if H2S impurities are present.

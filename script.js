@@ -28,7 +28,7 @@ const state = {
   imageSrc: "assets/jurong-island-map.png",
   imageReady: false,
   mode: "pipeline",
-  pipeSize: "10",
+  pipeSize: "32",
   contourStyle: "outline",
   scaleMode: false,
   scaleClicks: [],
@@ -39,9 +39,9 @@ const state = {
   labels: [],
   history: [],
   radii: {
-    red: 200,
-    orange: 500,
-    yellow: 1000,
+    red: 50,
+    orange: 150,
+    yellow: 300,
   },
 };
 
@@ -49,17 +49,17 @@ const pipePresets = {
   "10": {
     label: "10 inch",
     color: "#006b3c",
-    radii: { red: 100, orange: 250, yellow: 500 },
+    radii: { red: 15, orange: 40, yellow: 80 },
   },
   "32": {
     label: "32 inch",
     color: "#b00020",
-    radii: { red: 300, orange: 750, yellow: 1500 },
+    radii: { red: 50, orange: 150, yellow: 300 },
   },
   "18": {
     label: "18 inch",
     color: "#0047ab",
-    radii: { red: 150, orange: 400, yellow: 800 },
+    radii: { red: 30, orange: 80, yellow: 160 },
   },
 };
 
@@ -356,9 +356,9 @@ function drawAutoLegend() {
     lines.push({ type: "pipe", label: `${pipe.label} CO2 pipeline`, color: pipe.color });
   });
   if (usesContours) {
-    lines.push({ type: "zone", label: "Red: immediate high-concern zone", color: "#ff2d55", stroke: "#ff2d55" });
-    lines.push({ type: "zone", label: "Orange: emergency planning zone", color: "#ff9f1c", stroke: "#ff9f1c" });
-    lines.push({ type: "zone", label: "Yellow: wider receptor screening zone", color: "#f7ff3c", stroke: "#f7ff3c" });
+    lines.push({ type: "zone", label: "Red: Inner Zone (>= 1 x 10^-5/yr)", color: "#ff2d55", stroke: "#ff2d55" });
+    lines.push({ type: "zone", label: "Orange: Middle Zone (10^-5 to 10^-6/yr)", color: "#ff9f1c", stroke: "#ff9f1c" });
+    lines.push({ type: "zone", label: "Yellow: Outer Zone (10^-6 to 10^-7/yr)", color: "#f7ff3c", stroke: "#f7ff3c" });
   }
 
   ctx.save();

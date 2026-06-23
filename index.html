@@ -49,8 +49,8 @@
       <div class="group">
         <h2>Draw</h2>
         <div class="pipe-sizes" role="group" aria-label="Pipeline size">
-          <button class="size active size-10" data-size="10" type="button">10"</button>
-          <button class="size size-32" data-size="32" type="button">32"</button>
+          <button class="size size-10" data-size="10" type="button">10"</button>
+          <button class="size active size-32" data-size="32" type="button">32"</button>
           <button class="size size-18" data-size="18" type="button">18"</button>
         </div>
         <div class="segmented" role="group" aria-label="Drawing mode">
@@ -68,17 +68,17 @@
         <h2>Contour radius</h2>
         <label class="range danger">
           <span>Red</span>
-          <input id="redRadius" type="range" min="50" max="1500" step="50" value="200">
+          <input id="redRadius" type="range" min="5" max="1500" step="5" value="50">
           <output id="redValue">200 m</output>
         </label>
         <label class="range warning">
           <span>Orange</span>
-          <input id="orangeRadius" type="range" min="50" max="2000" step="50" value="500">
+          <input id="orangeRadius" type="range" min="5" max="2000" step="5" value="150">
           <output id="orangeValue">500 m</output>
         </label>
         <label class="range caution">
           <span>Yellow</span>
-          <input id="yellowRadius" type="range" min="50" max="3000" step="50" value="1000">
+          <input id="yellowRadius" type="range" min="5" max="3000" step="5" value="300">
           <output id="yellowValue">1000 m</output>
         </label>
         <button id="resetPreset" type="button">Reset to selected pipe defaults</button>
@@ -94,9 +94,9 @@
 
       <div class="group">
         <h2>Legend</h2>
-        <div class="legend-row"><span class="swatch red"></span>Immediate high-concern zone</div>
-        <div class="legend-row"><span class="swatch orange"></span>Emergency planning zone</div>
-        <div class="legend-row"><span class="swatch yellow"></span>Wider receptor screening zone</div>
+        <div class="legend-row"><span class="swatch red"></span>Inner Zone: >= 1 x 10^-5/yr</div>
+        <div class="legend-row"><span class="swatch orange"></span>Middle Zone: 10^-5 to 10^-6/yr</div>
+        <div class="legend-row"><span class="swatch yellow"></span>Outer Zone: 10^-6 to 10^-7/yr</div>
       </div>
 
       <div class="group">
@@ -108,7 +108,7 @@
         <button id="downloadPng" type="button" class="wide-action">Download PNG</button>
       </div>
 
-      <p class="note">Defaults are screening values based on public CO2 pipeline incident response distances and exposure thresholds. Actual risk contours require QRA or dispersion modelling.</p>
+      <p class="note">Defaults are approximate QRA-style individual-risk contours from the attached reference text. Worst-case CO2 plume footprints can be much larger and require dispersion modelling.</p>
     </aside>
   </main>
 
