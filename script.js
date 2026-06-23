@@ -32,6 +32,7 @@ const state = {
   contourStyle: "outline",
   scaleMode: false,
   scaleClicks: [],
+  calibrationPixels: null,
   pixelsPerMeter: null,
   activePipeline: [],
   pipelines: [],
@@ -443,6 +444,7 @@ function pushHistory() {
     sources: state.sources,
     labels: state.labels,
     activePipeline: state.activePipeline,
+    calibrationPixels: state.calibrationPixels,
     pixelsPerMeter: state.pixelsPerMeter,
     pipeSize: state.pipeSize,
     contourStyle: state.contourStyle,
@@ -460,6 +462,7 @@ function restoreHistory() {
   state.sources = snapshot.sources;
   state.labels = snapshot.labels;
   state.activePipeline = snapshot.activePipeline;
+  state.calibrationPixels = snapshot.calibrationPixels || null;
   state.pixelsPerMeter = snapshot.pixelsPerMeter;
   state.pipeSize = snapshot.pipeSize || "10";
   state.contourStyle = snapshot.contourStyle || "outline";
@@ -539,6 +542,7 @@ function saveProject() {
   const payload = {
     version: 1,
     imageSrc: state.imageSrc,
+    calibrationPixels: state.calibrationPixels,
     pixelsPerMeter: state.pixelsPerMeter,
     pipeSize: state.pipeSize,
     contourStyle: state.contourStyle,
@@ -560,6 +564,7 @@ function loadSavedProject() {
   }
   if (saved) {
     state.imageSrc = saved.imageSrc || state.imageSrc;
+    state.calibrationPixels = saved.calibrationPixels || null;
     state.pixelsPerMeter = saved.pixelsPerMeter || null;
     state.pipeSize = saved.pipeSize || state.pipeSize;
     state.contourStyle = saved.contourStyle || state.contourStyle;
@@ -593,22 +598,32 @@ function updateScaleReadout() {
     scaleReadout.textContent = "Scale not calibrated";
     return;
   }
-  scaleReadout.textContent = `500 m = ${Math.round(state.pixelsPerMeter * 500)} px`;
+  const metersPerPixel = 1 / state.pixelsPerMeter;
+  scaleReadout.textContent = `300 m = ${Math.round(radiusPx(300))} px · ${metersPerPixel.toFixed(2)} m/px`;
+}
+
+function applyCalibrationFromInputs() {
+  if (!state.calibrationPixels) return;
+  const meters = Math.max(1, Number(controls.scaleMeters.value));
+  state.pixelsPerMeter = state.calibrationPixels / meters;
+  updateScaleReadout();
+  draw();
 }
 
 canvas.addEventListener("click", (event) => {
   const point = getPointer(event);
 
-  if (state.scaleMode) {
+    if (state.scaleMode) {
     state.scaleClicks.push(point);
     if (state.scaleClicks.length === 2) {
       const [a, b] = state.scaleClicks;
       const px = Math.hypot(a.x - b.x, a.y - b.y);
       const meters = Math.max(1, Number(controls.scaleMeters.value));
       pushHistory();
-      state.pixelsPerMeter = px / meters;
+      state.calibrationPixels = px;
+      state.pixelsPerMeter = state.calibrationPixels / meters;
       state.scaleMode = false;
-      statusEl.textContent = "Scale calibrated.";
+      statusEl.textContent = `Scale calibrated: ${Math.round(px)} px = ${meters} m.`;
       updateScaleReadout();
     } else {
       statusEl.textContent = "Click the other end of the scale bar.";
@@ -673,7 +688,7 @@ controls.clearAll.addEventListener("click", () => {
 controls.calibrate.addEventListener("click", () => {
   state.scaleMode = true;
   state.scaleClicks = [];
-  statusEl.textContent = "Click one end of the map scale bar.";
+  statusEl.textContent = "Click both ends of the map scale bar, then set its real distance in metres.";
   draw();
 });
 
@@ -684,6 +699,7 @@ controls.fit.addEventListener("click", fitCanvasToShell);
 });
 
 controls.resetPreset.addEventListener("click", resetToSelectedPreset);
+controls.scaleMeters.addEventListener("input", applyCalibrationFromInputs);
 
 controls.upload.addEventListener("change", (event) => {
   const file = event.target.files?.[0];

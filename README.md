@@ -9,7 +9,7 @@ Open `index.html` in a browser. No internet connection or package install is nee
 ## Basic workflow
 
 1. Click `Calibrate from scale bar`.
-2. Click both ends of the map's `500 m` scale bar.
+2. Click both ends of the map's `500 m` scale bar. The known distance box must match the line you clicked.
 3. Draw a pipeline by clicking route points, then click `Finish pipeline`.
 4. Choose the pipeline size before drawing: 10 inch green, 32 inch red, or 18 inch blue.
 5. Click `Terminal` and place source points.
@@ -19,6 +19,8 @@ Open `index.html` in a browser. No internet connection or package install is nee
 9. Click `Download PNG`. The exported image includes an automatic legend for the pipeline sizes and contour zones used.
 
 Overlapping contour regions are merged before drawing, so zones that overlap become visually connected instead of appearing as separate stacked shapes.
+
+If you change the known distance after calibration, the contour scale updates automatically. A larger real-world distance for the same clicked line makes the contours smaller on the map.
 
 ## Approximate QRA-style contour defaults
 
