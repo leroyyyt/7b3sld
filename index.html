@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CO2 Risk Contour Sketcher</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <section class="stage" aria-label="Map drawing canvas">
+      <div class="canvas-shell">
+        <canvas id="mapCanvas"></canvas>
+      </div>
+      <div class="statusbar">
+        <span id="status">Pipeline mode: click points on the map.</span>
+        <span id="scaleReadout">Scale not calibrated</span>
+      </div>
+    </section>
+
+    <aside class="panel" aria-label="Drawing controls">
+      <div class="brand">
+        <span class="mark"></span>
+        <div>
+          <h1>CO2 Contour Sketcher</h1>
+          <p>Illustrative screening zones only</p>
+        </div>
+      </div>
+
+      <div class="group">
+        <h2>Map</h2>
+        <label class="file-button">
+          <input id="mapUpload" type="file" accept="image/*">
+          Load map image
+        </label>
+        <button id="fitMap" type="button">Fit map</button>
+      </div>
+
+      <div class="group">
+        <h2>Scale</h2>
+        <div class="inline">
+          <label for="scaleMeters">Known distance</label>
+          <input id="scaleMeters" type="number" min="1" step="50" value="500">
+          <span>m</span>
+        </div>
+        <button id="calibrateScale" type="button">Calibrate from scale bar</button>
+      </div>
+
+      <div class="group">
+        <h2>Draw</h2>
+        <div class="pipe-sizes" role="group" aria-label="Pipeline size">
+          <button class="size active size-10" data-size="10" type="button">10"</button>
+          <button class="size size-32" data-size="32" type="button">32"</button>
+          <button class="size size-18" data-size="18" type="button">18"</button>
+        </div>
+        <div class="segmented" role="group" aria-label="Drawing mode">
+          <button class="active" data-mode="pipeline" type="button">Pipeline</button>
+          <button data-mode="source" type="button">Terminal</button>
+          <button data-mode="label" type="button">Label</button>
+        </div>
+        <div class="actions">
+          <button id="finishPipeline" type="button">Finish pipeline</button>
+          <button id="undo" type="button">Undo</button>
+        </div>
+      </div>
+
+      <div class="group">
+        <h2>Contour radius</h2>
+        <label class="range danger">
+          <span>Red</span>
+          <input id="redRadius" type="range" min="50" max="1500" step="50" value="200">
+          <output id="redValue">200 m</output>
+        </label>
+        <label class="range warning">
+          <span>Orange</span>
+          <input id="orangeRadius" type="range" min="50" max="2000" step="50" value="500">
+          <output id="orangeValue">500 m</output>
+        </label>
+        <label class="range caution">
+          <span>Yellow</span>
+          <input id="yellowRadius" type="range" min="50" max="3000" step="50" value="1000">
+          <output id="yellowValue">1000 m</output>
+        </label>
+        <button id="resetPreset" type="button">Reset to selected pipe defaults</button>
+      </div>
+
+      <div class="group">
+        <h2>Contour display</h2>
+        <div class="contour-styles" role="group" aria-label="Contour display">
+          <button class="active" data-contour-style="outline" type="button">Line contours</button>
+          <button data-contour-style="shaded" type="button">Connected shading</button>
+        </div>
+      </div>
+
+      <div class="group">
+        <h2>Legend</h2>
+        <div class="legend-row"><span class="swatch red"></span>Immediate high-concern zone</div>
+        <div class="legend-row"><span class="swatch orange"></span>Emergency planning zone</div>
+        <div class="legend-row"><span class="swatch yellow"></span>Wider receptor screening zone</div>
+      </div>
+
+      <div class="group">
+        <h2>Export</h2>
+        <div class="actions">
+          <button id="saveProject" class="primary" type="button">Save changes</button>
+          <button id="clearAll" type="button">Clear drawings</button>
+        </div>
+        <button id="downloadPng" type="button" class="wide-action">Download PNG</button>
+      </div>
+
+      <p class="note">Defaults are screening values based on public CO2 pipeline incident response distances and exposure thresholds. Actual risk contours require QRA or dispersion modelling.</p>
+    </aside>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
